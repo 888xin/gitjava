@@ -23,7 +23,7 @@ public class SolrjQuery {
     public static void main(String[] args) {
         String url = "http://localhost:8080/solr";
         SolrServer server = new HttpSolrServer(url);
-        SolrQuery query = new SolrQuery("广东");
+        SolrQuery query = new SolrQuery("title:广东");
         try {
             QueryResponse response = server.query(query);
             SolrDocumentList docs = response.getResults();
