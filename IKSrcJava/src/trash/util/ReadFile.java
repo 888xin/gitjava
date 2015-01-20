@@ -256,19 +256,40 @@ public class ReadFile {
 //        WriteLines writeLines = new WriteLines(new File("C:\\Users\\Lifeix\\Desktop\\敏感词库\\我\\分开敏感词2.txt"));
 //        writeLines.WriteLineByEncode(ss2,"gbk");
 
-        File file = new File("C:\\Users\\Lifeix\\Desktop\\3.txt");
-        String[] strs = readTxtByLine(file,"gbk");
-        Connection connection = JdbcUtils2.getConnection("jdbc:mysql://192.168.2.3:3306/anti_center?characterEncoding=UTF8",
-                "skst", "TestDBSkst$@") ;
-        List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
-        Map<String, Object> map = null ;
-        for (int i = 0; i < strs.length; i++) {
-            map = new HashMap<String, Object>();
-            map.put("serviceKind", "10,11,12");
-            map.put("sensitive_word", strs[i]);
-            mapList.add(map);
+//        File file = new File("C:\\Users\\Lifeix\\Desktop\\3.txt");
+//        String[] strs = readTxtByLine(file,"gbk");
+//        Connection connection = JdbcUtils2.getConnection("jdbc:mysql://192.168.2.3:3306/anti_center?characterEncoding=UTF8",
+//                "skst", "TestDBSkst$@") ;
+//        List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+//        Map<String, Object> map = null ;
+//        for (int i = 0; i < strs.length; i++) {
+//            map = new HashMap<String, Object>();
+//            map.put("serviceKind", "10,11,12");
+//            map.put("sensitive_word", strs[i]);
+//            mapList.add(map);
+//        }
+//        JdbcUtils2.update(connection, "sensitive_word", mapList, "serviceKind", "sensitive_word");
+//
+//        //用完数据库，释放连接
+//        JdbcUtils2.free(null,null,connection);
+
+        Connection connection = JdbcUtils2.getConnection("jdbc:mysql://localhost:3306/song?characterEncoding=UTF8",
+                "root", "465864") ;
+        for (int i = 1; i < 81; i++) {
+            File file = new File("C:\\Users\\Lifeix\\Desktop\\歌词\\" + i + ".txt");
+            String[] strs = readTxtByLine(file,"utf-8");
+
+            String sql1 = "insert into track(tid, trackname, singername) values (?,?,?)" ;
+            JdbcUtils2.insert(connection, sql1, i+"" ,strs[0], strs[1] + strs[2]);
+
+            String sql2 = "insert into lyrics(tid, lrc) values (?,?)" ;
+            StringBuilder s = new StringBuilder();
+            for (int j = 3; j < strs.length; j++) {
+                s.append(strs[j]);
+            }
+            JdbcUtils2.insert(connection, sql2, i+"" ,s.toString());
         }
-        JdbcUtils2.update(connection, "sensitive_word", mapList, "serviceKind", "sensitive_word");
+
 
         //用完数据库，释放连接
         JdbcUtils2.free(null,null,connection);
