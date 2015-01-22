@@ -249,7 +249,7 @@ public final class JdbcUtils2 {
             Map<String, Object> data = null;
             while (rs.next()) {
                 data = new HashMap<String, Object>();
-                for (int i = 1; i < columnCount; i++) {
+                for (int i = 1; i <= columnCount; i++) {
                     data.put(rsmd.getColumnLabel(i), rs.getObject(rsmd
                             .getColumnLabel(i)));
                 }
